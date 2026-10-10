@@ -255,10 +255,44 @@ h2,h3,p{margin:0;font-weight:inherit}
 /* desktop: the wrapper divs are layout-transparent */
 @media (min-width: 960px) and (min-aspect-ratio: 9/10) and (not ((hover: none) and (pointer: coarse))){ .main,.nav{display:contents} }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* One opening composition: the backdrop and structural rules stay still. */
+@media (prefers-reduced-motion:no-preference){
+  .ft.entry .logo-d,.ft.entry .logo-h{
+    animation:loomix-mark .86s cubic-bezier(.22,1,.36,1) .06s backwards}
+  .ft.entry .headline{
+    animation:loomix-headline .78s cubic-bezier(.22,1,.36,1) .33s backwards}
+  .ft.entry .col-imp{
+    animation:loomix-group .58s cubic-bezier(.22,1,.36,1) .58s backwards}
+  .ft.entry .col-legal{
+    animation:loomix-group .58s cubic-bezier(.22,1,.36,1) .68s backwards}
+  .ft.entry .cta{
+    animation:loomix-group .62s cubic-bezier(.22,1,.36,1) .82s backwards}
+  .ft.entry .social{
+    animation:loomix-presence .48s cubic-bezier(.22,1,.36,1) 1.08s backwards}
+  .ft.entry .copy{
+    animation:loomix-presence .45s cubic-bezier(.22,1,.36,1) 1.19s backwards}
+}
+@keyframes loomix-mark{
+  from{opacity:0;clip-path:inset(0 0 100% 0)}
+  to{opacity:1;clip-path:inset(0)}
+}
+@keyframes loomix-headline{
+  from{opacity:0;clip-path:inset(0 0 100% 0);transform:translateY(10px)}
+  to{opacity:1;clip-path:inset(0);transform:none}
+}
+@keyframes loomix-group{
+  from{opacity:0;transform:translateY(9px)}
+  to{opacity:1;transform:none}
+}
+@keyframes loomix-presence{
+  from{opacity:0}
+  to{opacity:1}
+}
 </style>
 </head>
 <body>
-<footer class="ft" aria-labelledby="ft-title">
+<footer class="ft entry" aria-labelledby="ft-title">
   <h2 id="ft-title" class="sr">Loomix footer</h2>
 
   <!-- Shared vector art (referenced by both the desktop and mobile views) -->
@@ -363,5 +397,24 @@ h2,h3,p{margin:0;font-weight:inherit}
     <p class="copy">Copyright © 2024 - All rights reserved</p>
   </div>
 </footer>
+<script>
+(() => {
+  const footer = document.querySelector('.ft.entry');
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    footer.classList.remove('entry');
+    return;
+  }
+
+  const finalElement = footer.querySelector('.copy');
+  const finish = event => {
+    if (event && (event.target !== finalElement || event.animationName !== 'loomix-presence')) return;
+    clearTimeout(fallback);
+    footer.removeEventListener('animationend', finish);
+    footer.classList.remove('entry');
+  };
+  footer.addEventListener('animationend', finish);
+  const fallback = setTimeout(finish, 2200);
+})();
+</script>
 </body>
 </html>
