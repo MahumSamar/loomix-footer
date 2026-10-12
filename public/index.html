@@ -57,6 +57,7 @@ h2,h3,p{margin:0;font-weight:inherit}
 /* glow field: anchored at its bottom edge (y = 558u); if the viewport is
    taller than the composition it grows upward (white sky + fan lines). */
 .glow-img,.glow-lines{left:0;top:0;width:100%;height:calc(558 * var(--u));overflow:visible;pointer-events:none}
+.glow-img{display:block;object-fit:fill}
 .dash{left:0;top:calc(964 * var(--u));width:100%;height:calc(2 * var(--u));overflow:visible;pointer-events:none}
 .dash line{stroke:#fff;stroke-opacity:0.115;stroke-width:calc(1 * var(--u));
   stroke-dasharray:calc(7.5 * var(--u)) calc(6.47 * var(--u));
@@ -157,12 +158,13 @@ h2,h3,p{margin:0;font-weight:inherit}
     grid-template-areas:"glow glow" "logo logo" "main main" "social copy";
   }
   .stage > *,.headline,.cta,.col,.social,.copy{position:relative;left:auto;top:auto;right:auto;bottom:auto}
-  .glow-img,.glow-lines,.dash,.rules,.logo-d{display:none}
+  .glow-lines,.dash,.rules,.logo-d{display:none}
 
   /* glow band: absorbs spare height; never zoomed past 0.75 × width —
      beyond that the extra becomes open sky (as on desktop) */
-  .stage::before{content:"";grid-area:glow;background:var(--glow-top)}
-  .glow-m{display:block;grid-area:glow;align-self:end;width:100%;height:100%;max-height:75cqw;contain:size}
+  .stage::before{content:"";grid-area:glow;background:linear-gradient(var(--glow-top) calc(100% - 2px),var(--bg) 0)}
+  .glow-img,.glow-m{display:block;grid-area:glow;align-self:end;width:100%;height:100%;max-height:75cqw;contain:size}
+  .glow-img{object-fit:cover;object-position:50% 100%}
 
   /* wordmark rises out of the glow, as on desktop */
   .logo-h{display:block;grid-area:logo;justify-self:center;width:var(--logo-w);height:auto;aspect-ratio:398/96;
@@ -319,7 +321,6 @@ h2,h3,p{margin:0;font-weight:inherit}
 
       <g id="art">
         <rect x="-200" y="-6000" width="1726" height="6000.5" fill="var(--glow-top)"/>
-        <image id="glowImg" href="assets/glow.webp" x="0" y="0" width="1326" height="558" preserveAspectRatio="none"/>
         <g id="fanG" fill="none" stroke="url(#fanFade)" stroke-width="1"><line vector-effect="non-scaling-stroke" x1="-119.76" y1="-2400" x2="511.94" y2="140" stroke-opacity="0.050"/><line vector-effect="non-scaling-stroke" x1="-119.48" y1="-2400" x2="554.89" y2="140" stroke-opacity="0.058"/><line vector-effect="non-scaling-stroke" x1="-119.83" y1="-2400" x2="596.45" y2="140" stroke-opacity="0.065"/><line vector-effect="non-scaling-stroke" x1="-123.56" y1="-2400" x2="638.95" y2="140" stroke-opacity="0.073"/><line vector-effect="non-scaling-stroke" x1="-127.97" y1="-2400" x2="680.77" y2="140" stroke-opacity="0.080"/><line vector-effect="non-scaling-stroke" x1="-131.89" y1="-2400" x2="722.31" y2="140" stroke-opacity="0.087"/><line vector-effect="non-scaling-stroke" x1="-140.44" y1="-2400" x2="764.31" y2="140" stroke-opacity="0.095"/><line vector-effect="non-scaling-stroke" x1="-150.00" y1="-2400" x2="806.56" y2="140" stroke-opacity="0.103"/><line vector-effect="non-scaling-stroke" x1="-151.06" y1="-2400" x2="849.19" y2="140" stroke-opacity="0.110"/><line vector-effect="non-scaling-stroke" x1="-145.52" y1="-2400" x2="891.82" y2="140" stroke-opacity="0.118"/><line vector-effect="non-scaling-stroke" x1="-159.50" y1="-2400" x2="936.51" y2="140" stroke-opacity="0.125"/></g>
         <path id="arcP" vector-effect="non-scaling-stroke" d="M0.0 143.50 C17.0 152.72 68.0 182.01 102.0 198.82 C136.0 215.64 170.0 230.21 204.0 244.38 C238.0 258.56 272.0 271.60 306.0 283.89 C340.0 296.18 374.0 307.70 408.0 318.10 C442.0 328.50 476.0 338.08 510.0 346.30 C544.0 354.51 578.0 361.66 612.0 367.39 C646.0 373.12 680.0 377.54 714.0 380.68 C748.0 383.83 782.0 385.53 816.0 386.27 C850.0 387.00 884.0 386.36 918.0 385.09 C952.0 383.81 986.0 381.43 1020.0 378.62 C1054.0 375.82 1088.0 372.31 1122.0 368.24 C1156.0 364.16 1190.0 359.85 1224.0 354.17 C1258.0 348.49 1309.0 337.50 1326.0 334.16" fill="none" stroke="#fff" stroke-opacity="0.3" stroke-width="1.05"/>
         <circle cx="780.7" cy="351.5" r="78" fill="none" stroke="#fff" stroke-opacity="0.3" stroke-width="1.05"/>
@@ -334,7 +335,9 @@ h2,h3,p{margin:0;font-weight:inherit}
   <div class="stage">
     <!-- glow field: desktop (exact, grows upward) / mobile (cropped band that flexes) -->
     <!-- desktop: glow + arc + fan stretch full-bleed; ring/dividers/wordmark stay in the centred frame -->
-    <svg class="glow-img" viewBox="0 0 1326 558" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#glowImg"/></svg>
+    <video class="glow-img" autoplay muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1"
+      poster="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/268a5091-209c-4d89-bf5b-78babedc06ab.webp"
+      src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261012_100222_1fb7b304-6c4d-4483-a015-003c4bffeea0.mp4"></video>
     <svg class="glow-lines" viewBox="0 0 1326 558" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#fanG"/><use href="#arcP"/></svg>
     <svg class="dash" aria-hidden="true" focusable="false"><line x1="0" y1="50%" x2="100%" y2="50%"/></svg>
     <svg class="glow-m" viewBox="0 0 1326 558" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false"><use href="#art"/></svg>
